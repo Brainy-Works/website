@@ -1,8 +1,8 @@
 // Contact information
 export const CONTACT_INFO = {
-  phone: "+918085035032",
+  phone: "+919785911656",
   email: "developer@teconico.in",
-  whatsappNumber: "918085035032", // Without + for WhatsApp URL
+  whatsappNumber: "919785911656", // Without + for WhatsApp URL
 };
 
 // WhatsApp message templates
