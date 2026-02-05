@@ -4,9 +4,6 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import logo from "@/assets/LOGO.png";
 
 const MODEL_URL = "/assets/sci_fi_cube_01.glb";
-const VIDEO_FORWARD_URL =
-  "/assets/untitled_Veo%203.1%20Image%20to%20Video_2026-02-04_17-26-52.mp4";
-const VIDEO_REVERSE_URL = "/assets/video_reverse.mp4";
 
 // Performance: Detect low-end devices
 const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -15,63 +12,30 @@ const targetPixelRatio = isMobile || isLowEnd ? 1 : Math.min(window.devicePixelR
 
 export function Hero3DExperience() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const videoForwardRef = useRef<HTMLVideoElement | null>(null);
-  const videoReverseRef = useRef<HTMLVideoElement | null>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
-  const [videoActive, setVideoActive] = useState(false);
-  const [currentDirection, setCurrentDirection] = useState<"forward" | "reverse">("forward");
   const [logoVisible, setLogoVisible] = useState(false);
   const [logoHiding, setLogoHiding] = useState(false);
   const [modelHidden, setModelHidden] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const durationRef = useRef(0);
   const rafRef = useRef<number | null>(null);
 
-  const stopAll = useCallback(() => {
-    videoForwardRef.current?.pause();
-    videoReverseRef.current?.pause();
-  }, []);
-
   const playForward = useCallback(() => {
-    const forwardVideo = videoForwardRef.current;
-    const reverseVideo = videoReverseRef.current;
-    if (!forwardVideo || !reverseVideo) return;
-
-    stopAll();
     setLogoVisible(false);
     setLogoHiding(false);
     setModelHidden(true);
-    setCurrentDirection("forward");
-    setVideoActive(true);
-
-    reverseVideo.currentTime = 0;
-    forwardVideo.currentTime = 0;
-    const playAttempt = forwardVideo.play();
-    if (playAttempt && typeof playAttempt.catch === "function") {
-      playAttempt.catch(() => undefined);
-    }
-  }, [stopAll]);
+    window.setTimeout(() => {
+      setLogoVisible(true);
+    }, 120);
+  }, []);
 
   const playReverse = useCallback(() => {
-    const forwardVideo = videoForwardRef.current;
-    const reverseVideo = videoReverseRef.current;
-    if (!forwardVideo || !reverseVideo) return;
-
-    stopAll();
     setLogoHiding(true);
-    setCurrentDirection("reverse");
-    setVideoActive(true);
-
-    const startReverse = () => {
-      reverseVideo.currentTime = 0;
-      const playAttempt = reverseVideo.play();
-      if (playAttempt && typeof playAttempt.catch === "function") {
-        playAttempt.catch(() => undefined);
-      }
-    };
-
-    window.setTimeout(startReverse, 450);
-  }, [stopAll]);
+    window.setTimeout(() => {
+      setLogoVisible(false);
+      setLogoHiding(false);
+      setModelHidden(false);
+    }, 420);
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -201,12 +165,9 @@ export function Hero3DExperience() {
       pathGroup.position.copy(position);
       pathGroup.lookAt(target);
 
-      const scrollProgress = durationRef.current
-        ? (videoForwardRef.current?.currentTime ?? 0) / durationRef.current
-        : 0;
-      modelGroup.rotation.y = Math.sin(elapsed * 0.4) * 0.2 + scrollProgress * 0.6;
+      modelGroup.rotation.y = Math.sin(elapsed * 0.4) * 0.2;
       modelGroup.rotation.x = Math.cos(elapsed * 0.35) * 0.15;
-      modelGroup.position.y = Math.sin(elapsed * 0.6) * 0.09 + scrollProgress * 0.08;
+      modelGroup.position.y = Math.sin(elapsed * 0.6) * 0.09;
 
       // Mouse-follow light
       mouseLight.position.x += (mouseRef.current.x * 2 - mouseLight.position.x) * 0.05;
@@ -285,49 +246,10 @@ export function Hero3DExperience() {
     };
   }, []);
 
-  useEffect(() => {
-    const forwardVideo = videoForwardRef.current;
-    const reverseVideo = videoReverseRef.current;
-    if (!forwardVideo || !reverseVideo) return;
-
-    const handleMetadata = () => {
-      if (!forwardVideo.duration || !reverseVideo.duration) return;
-      durationRef.current = Math.min(forwardVideo.duration, reverseVideo.duration);
-    };
-
-    const handleForwardEnd = () => {
-      stopAll();
-      setVideoActive(true);
-      setLogoVisible(true);
-    };
-
-    const handleReverseEnd = () => {
-      stopAll();
-      setVideoActive(false);
-      setLogoVisible(false);
-      setLogoHiding(false);
-      setModelHidden(false);
-      forwardVideo.currentTime = 0;
-      reverseVideo.currentTime = 0;
-    };
-
-    forwardVideo.addEventListener("loadedmetadata", handleMetadata);
-    reverseVideo.addEventListener("loadedmetadata", handleMetadata);
-    forwardVideo.addEventListener("ended", handleForwardEnd);
-    reverseVideo.addEventListener("ended", handleReverseEnd);
-
-    return () => {
-      forwardVideo.removeEventListener("loadedmetadata", handleMetadata);
-      reverseVideo.removeEventListener("loadedmetadata", handleMetadata);
-      forwardVideo.removeEventListener("ended", handleForwardEnd);
-      reverseVideo.removeEventListener("ended", handleReverseEnd);
-    };
-  }, [stopAll]);
-
   return (
     <div className="hero-3d-shell">
       {/* Click hint */}
-      {!videoActive && !logoVisible && (
+      {!logoVisible && !modelHidden && (
         <div className="hero-click-hint">
           <span className="hero-click-hint-text">Click to explore</span>
           <div className="hero-click-hint-ring" />
@@ -336,7 +258,7 @@ export function Hero3DExperience() {
 
       <div
         ref={containerRef}
-        className={`hero-3d-stage ${videoActive ? "is-video-active" : ""} ${modelHidden ? "is-hidden" : ""} ${isHovering ? "is-hovering" : ""}`}
+        className={`hero-3d-stage ${modelHidden ? "is-hidden" : ""} ${isHovering ? "is-hovering" : ""}`}
         role="button"
         tabIndex={0}
         aria-label="Play cube animation"
@@ -357,25 +279,6 @@ export function Hero3DExperience() {
       >
         <img src={logo} alt="Brainy Works" className="hero-3d-logo" />
       </button>
-
-      <div className={`hero-video-layer ${videoActive ? "is-active" : ""}`}>
-        <video
-          ref={videoForwardRef}
-          className={`hero-video ${currentDirection === "forward" ? "is-active-video" : ""}`}
-          src={VIDEO_FORWARD_URL}
-          muted
-          playsInline
-          preload="metadata"
-        />
-        <video
-          ref={videoReverseRef}
-          className={`hero-video ${currentDirection === "reverse" ? "is-active-video" : ""}`}
-          src={VIDEO_REVERSE_URL}
-          muted
-          playsInline
-          preload="metadata"
-        />
-      </div>
     </div>
   );
 }
