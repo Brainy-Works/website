@@ -12,6 +12,7 @@ export default function Index() {
   return (
     <Layout>
       <HeroSection />
+      <div id="hero-scroll-sentinel" className="hero-scroll-sentinel" />
       <ProofStrip />
       <CapabilitiesSection />
       <FeaturedProjects />
