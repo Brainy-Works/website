@@ -41,7 +41,7 @@ export function Footer() {
                 <Mail className="w-5 h-5" />
               </a>
               <a
-                href="https://linkedin.com/company/brainyworks"
+                href="https://www.linkedin.com/in/brainy-works"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-colors"
