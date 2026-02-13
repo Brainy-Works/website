@@ -12,6 +12,8 @@ const navLinks = [
   { name: "Contact", href: "/contact" },
 ];
 
+const demoWebsitesLink = { name: "Demo Websites", href: "/demo-websites" };
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -25,7 +27,7 @@ export function Navbar() {
             <img 
               src={logo} 
               alt="Brainyworks" 
-              className="h-8 w-auto group-hover:shadow-lg group-hover:shadow-primary/30 transition-shadow"
+              className="h-12 lg:h-14 w-auto group-hover:shadow-lg group-hover:shadow-primary/30 transition-shadow"
             />
           </Link>
 
@@ -44,6 +46,19 @@ export function Navbar() {
                 {link.name}
               </Link>
             ))}
+
+            <Button
+              asChild
+              variant="secondary"
+              size="sm"
+              className={`border border-primary/20 bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary ${
+                location.pathname.startsWith(demoWebsitesLink.href)
+                  ? "ring-2 ring-primary/30"
+                  : ""
+              }`}
+            >
+              <Link to={demoWebsitesLink.href}>{demoWebsitesLink.name}</Link>
+            </Button>
           </div>
 
           {/* CTA Button */}
@@ -74,6 +89,19 @@ export function Navbar() {
             className="lg:hidden bg-background border-b border-border"
           >
             <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
+              <Button
+                asChild
+                variant="secondary"
+                className={`justify-start border border-primary/20 bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary ${
+                  location.pathname.startsWith(demoWebsitesLink.href)
+                    ? "ring-2 ring-primary/30"
+                    : ""
+                }`}
+              >
+                <Link to={demoWebsitesLink.href} onClick={() => setIsOpen(false)}>
+                  {demoWebsitesLink.name}
+                </Link>
+              </Button>
               {navLinks.map((link) => (
                 <Link
                   key={link.name}

@@ -4,10 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "npm run build:demos",
     "dev": "vite",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
+    "build:demos": "node scripts/build-demos.mjs",
+    "build": "npm run build:demos && vite build",
+    "build:dev": "npm run build:demos && vite build --mode development",
     "lint": "eslint .",
+    "prepreview": "npm run build:demos",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"

@@ -1,7 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, Mail, MapPin, Clock, CheckCircle } from "lucide-react";
+import { Send, Mail, MapPin, Clock, CheckCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -250,7 +250,20 @@ export default function Contact() {
                       </div>
                       <h3 className="font-semibold text-foreground">Email</h3>
                     </div>
-                    <p className="text-muted-foreground">hello@brainyworks.io</p>
+                    <p className="text-muted-foreground">developer@brainyworks.in</p>
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <div className="flex items-center gap-4 mb-3">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Phone className="w-5 h-5 text-primary" />
+                      </div>
+                      <h3 className="font-semibold text-foreground">Phone</h3>
+                    </div>
+                    <a href="tel:+919039430279" className="text-muted-foreground hover:text-primary transition-colors">
+                      +91 90394 30279
+                    </a>
                   </div>
 
                   {/* Response Time */}
@@ -272,7 +285,7 @@ export default function Contact() {
                       </div>
                       <h3 className="font-semibold text-foreground">Location</h3>
                     </div>
-                    <p className="text-muted-foreground">Remote-first, serving global clients</p>
+                    <p className="text-muted-foreground">6, Ajmer Rd, Nirman Nagar, Brijlalpura, Jaipur, Rajasthan 302019</p>
                   </div>
 
                   {/* Availability */}

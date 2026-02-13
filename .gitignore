@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Generated demo website builds (created via npm run build:demos)
+public/demos/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

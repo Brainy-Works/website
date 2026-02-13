@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Zap, Mail, Linkedin, Github } from "lucide-react";
+import { Zap, Mail, Linkedin, Github, Phone } from "lucide-react";
 
 const footerLinks = {
   company: [
@@ -34,11 +34,18 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               <a
-                href="mailto:hello@brainyworks.in"
+                href="mailto:developer@brainyworks.in"
                 className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-colors"
                 aria-label="Email us"
               >
                 <Mail className="w-5 h-5" />
+              </a>
+              <a
+                href="tel:+919039430279"
+                className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-secondary/80 transition-colors"
+                aria-label="Call us"
+              >
+                <Phone className="w-5 h-5" />
               </a>
               <a
                 href="https://www.linkedin.com/in/brainy-works"
@@ -59,6 +66,12 @@ export function Footer() {
                 <Github className="w-5 h-5" />
               </a>
             </div>
+            <a
+              href="tel:+919039430279"
+              className="inline-flex text-sm text-muted-foreground hover:text-primary transition-colors mt-4"
+            >
+              +91 90394 30279
+            </a>
           </div>
 
           {/* Company Links */}
